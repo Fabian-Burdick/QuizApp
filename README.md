@@ -1,1 +1,1 @@
-Eine QuizApp mit Bootstrap Function CSS und JS
+Eine QuizApp mit Bootstrap Function CSS und JS.
