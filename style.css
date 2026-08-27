@@ -12,6 +12,10 @@ body {
   text-decoration: none;
 }
 
+.d-none {
+  display: none;
+}
+
 header {
   position: absolute;
   top: 0;

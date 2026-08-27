@@ -57,11 +57,14 @@ let questions = [
 let currentQuestion = 0;
 
 function init() {
-  document.getElementById('question-number').innerHTML = questions.length;
+  document.getElementById('questionNumber').innerHTML = questions.length;
   renderQuestions();
 }
 
 function renderQuestions() {
+  document.getElementById('questionPosition').innerHTML = currentQuestion + 1;
+  resetAnswerButtons();
+
   let question = questions[currentQuestion];
   document.getElementById('questiontext').innerHTML = question['question'];
   document.getElementById('answer_1').innerHTML = question['answer_1'];
@@ -72,19 +75,35 @@ function renderQuestions() {
 
 function answer(selection) {
   let question = questions[currentQuestion];
-  console.log('Selected answer is', selection);
   let selectedQuestionNumber = selection.slice(-1);
-  console.log('selectedQuestionNumber is', selectedQuestionNumber);
-  console.log('Current question is', question['right_answer']);
-
   let idOfRightAnswer = `answer_${question['right_answer']}`;
 
   if (selectedQuestionNumber == question['right_answer']) {
-    console.log('Richtige Antwort!!');
     document.getElementById(selection).parentNode.classList.add('bg-success');
   } else {
-    console.log('Falsche Antwort!!');
     document.getElementById(selection).parentNode.classList.add('bg-danger');
     document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+  }
+  document.getElementById('nextButton').disabled = false;
+}
+
+function nextQuestion() {
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    document.getElementById('nextButton').disabled = true;
+    renderQuestions();
+  } else {
+    document.getElementById('questiontext').innerHTML = 'Quiz beendet!';
+    document.getElementById('nextButton').disabled = true;
+  }
+}
+
+function resetAnswerButtons() {
+  for (let i = 1; i <= 4; i++) {
+    let element = document.getElementById(`answer_${i}`);
+    if (element) {
+      element.parentNode.classList.remove('bg-success', 'bg-danger');
+    }
   }
 }

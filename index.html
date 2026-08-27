@@ -30,7 +30,7 @@
       </nav>
     </header>
 
-    <div class="card-container">
+    <div id="cardContainer" class="card-container">
       <div class="card quizzcard">
         <img src="./img/quiz2.jpg" class="card-img-top" />
         <div class="card-body">
@@ -53,8 +53,8 @@
           </div>
 
           <div class="question-footer">
-            <span><b>1</b>von <b id="question-number"></b> Fragen </span>
-            <button class="btn btn-primary">Nächste Frage</button>
+            <span><b id="questionPosition"></b> von <b id="questionNumber"></b> Fragen </span>
+            <button class="btn btn-primary" id="nextButton" disabled onclick="nextQuestion()">Nächste Frage</button>
           </div>
         </div>
       </div>
