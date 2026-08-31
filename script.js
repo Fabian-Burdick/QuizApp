@@ -1,14 +1,22 @@
+let rightQuestions = 0;
 let currentQuestion = 0;
+let audioRight = new Audio('audio/right.mp3');
+let audioWrong = new Audio('audio/wrong.mp3');
+let audioFinish = new Audio('audio/finished.mp3');
 
 function init() {
   document.getElementById('questionNumber').innerHTML = questions.length;
-  renderQuestions();
+  showQuestions();
 }
 
-function renderQuestions() {
+function showQuestions() {
   document.getElementById('questionPosition').innerHTML = currentQuestion + 1;
   resetAnswerButtons();
+  updateProgressBar();
+  renderQuestionsAndAnswers();
+}
 
+function renderQuestionsAndAnswers() {
   let question = questions[currentQuestion];
   document.getElementById('questiontext').innerHTML = question['question'];
   document.getElementById('answer_1').innerHTML = question['answer_1'];
@@ -24,8 +32,11 @@ function answer(selection) {
 
   if (selectedQuestionNumber == question['right_answer']) {
     document.getElementById(selection).parentNode.classList.add('bg-success');
+    audioRight.play();
+    rightQuestions++;
   } else {
     document.getElementById(selection).parentNode.classList.add('bg-danger');
+    audioWrong.play();
     document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
   }
   document.getElementById('nextButton').disabled = false;
@@ -36,10 +47,9 @@ function nextQuestion() {
 
   if (currentQuestion < questions.length) {
     document.getElementById('nextButton').disabled = true;
-    renderQuestions();
+    showQuestions();
   } else {
-    document.getElementById('questiontext').innerHTML = 'Quiz beendet!';
-    document.getElementById('nextButton').disabled = true;
+    quizFinished();
   }
 }
 
@@ -50,4 +60,27 @@ function resetAnswerButtons() {
       element.parentNode.classList.remove('bg-success', 'bg-danger');
     }
   }
+}
+
+function updateProgressBar() {
+  let percent = (currentQuestion + 1) / questions.length;
+  percent = Math.round(percent * 100);
+  document.getElementById('progressBar').innerHTML = `${percent}%`;
+  document.getElementById('progressBar').style.width = `${percent}%`;
+}
+
+function quizFinished() {
+  document.getElementById('endScreen').style = '';
+  document.getElementById('questionBody').style = 'display:none';
+  audioFinish.play();
+  document.getElementById('questionNumberEnd').innerHTML = questions.length;
+  document.getElementById('rightQuestionNumber').innerHTML = rightQuestions;
+}
+
+function restartGame() {
+  document.getElementById('questionBody').style = '';
+  document.getElementById('endScreen').style = 'display:none';
+  rightQuestions = 0;
+  currentQuestion = 0;
+  init();
 }
